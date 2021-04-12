@@ -75,3 +75,4 @@ int main()
 	std::cout << "Obwod trojkata = " << t.obwod_trojkata() << std::endl;
 	std::cout << "Pole trojkata = " << t.pole_trojkata() << std::endl;
 }
+//aaabbbccc
