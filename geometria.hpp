@@ -55,11 +55,10 @@ class ekran
 	ekran(int nowy_xy) : ekran(nowy_xy, nowy_xy) {}	
 	bool czy_wektor_w_zakresie(const wektor &w) const;
 	bool czy_trojkat_w_zakresie(const trojkat &t) const;
-	private:
-	
 };
 
 std::ostream &operator<<(std::ostream &s, const wektor &w);
 std::ostream &operator<<(std::ostream &s, const trojkat &t);
+std::ostream &operator<<(std::ostream &s, const ekran &e);
 
 trojkat *szukaj_trojkata_najblizej_srodka(std::vector<trojkat> &trojkaty, const ekran wyswietlacz);

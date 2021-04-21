@@ -164,3 +164,9 @@ std::ostream &operator<<(std::ostream &s, const trojkat &t)
 	s << t.punkty[0] << ", " << t.punkty[1] << ", " << t.punkty[2];
 	return s;
 }
+
+std::ostream &operator<<(std::ostream &s, const ekran &e)
+{
+    s << e.x << "x" << e.y;
+    return s;
+}

@@ -13,10 +13,9 @@ int main()
 {
 	srand(time(NULL));
 	ekran ekran1;
-	wektor srodek_ekranu = {ekran1.x/2, ekran1.y/2};
-	std::cout << srodek_ekranu << std::endl;
+	std::cout << "\nRozdzelczosc ekranu : " << ekran1 << std::endl;
 	std::vector<trojkat> trojkaty;
-	
+	std::cout << "\nTrojkaty :" << std::endl;
 	for(int i = 0; i < 10; ++i)
 		trojkaty.emplace_back(wektor(generuj_liczbe_losowa(), generuj_liczbe_losowa()),
 		wektor(generuj_liczbe_losowa(), generuj_liczbe_losowa()),
@@ -25,5 +24,6 @@ int main()
 	for( const auto &t : trojkaty )
 		std::cout << t << std::endl;
 
-	std::cout << "\n" << *szukaj_trojkata_najblizej_srodka(trojkaty, ekran1) << std::endl;
+	std::cout << "\nTrojkat z wirzcholkiem najblizej srodka ekranu :" << std::endl;
+	std::cout << *szukaj_trojkata_najblizej_srodka(trojkaty, ekran1) << std::endl;
 }
