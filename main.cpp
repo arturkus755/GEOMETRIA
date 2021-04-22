@@ -27,5 +27,5 @@ int main()
 	std::cout << "\nTrojkat z wirzcholkiem najblizej srodka ekranu :" << std::endl;
 	trojkat najblizszy = *szukaj_trojkata_najblizej_srodka(trojkaty, ekran1);
 	std::cout << najblizszy << std::endl;
-	std::cout << "\ndlugosc jednego z bokow trojkata" << najblizszy.dlugosc_boku(2) << std::endl;
+	std::cout << "\ndlugosc jednego z bokow trojkata\n" << najblizszy.dlugosc_boku(2) << std::endl;
 }

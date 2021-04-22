@@ -121,8 +121,8 @@ bool trojkat::czy_prostokatny() const
 
 bool trojkat::czy_rownoboczny() const
 {
-	if (punkty[0].kwadrat_dlugosci() == punkty[1].kwadrat_dlugosci() &&
-	punkty[1].kwadrat_dlugosci() == punkty[2].kwadrat_dlugosci())
+	if ((punkty[0] - punkty[1]).kwadrat_dlugosci() == (punkty[1] - punkty[2]).kwadrat_dlugosci() &&
+	(punkty[1] - punkty[2]).kwadrat_dlugosci() == (punkty[2] - punkty[0]).kwadrat_dlugosci())
 		return true;
 	return false;
 }
@@ -131,7 +131,7 @@ bool trojkat::czy_rownoramienny() const
 {
 	for (int i = 0; i < 3; ++i)
 	{
-		if (punkty[i % 3].kwadrat_dlugosci() == punkty[(i + 1) % 3].kwadrat_dlugosci())
+		if ((punkty[i] - punkty[(i + 1) % 3]).kwadrat_dlugosci() == (punkty[(i + 1) % 3] - punkty[(i + 2) % 3]).kwadrat_dlugosci())
 			return true;
 	}
 	return false;
