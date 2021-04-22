@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iosfwd>
-#include <vector>
 
 class wektor
 {
@@ -62,4 +61,4 @@ std::ostream &operator<<(std::ostream &s, const wektor &w);
 std::ostream &operator<<(std::ostream &s, const trojkat &t);
 std::ostream &operator<<(std::ostream &s, const ekran &e);
 
-trojkat *szukaj_trojkata_najblizej_srodka(std::vector<trojkat> &trojkaty, const ekran wyswietlacz);
+trojkat *szukaj_trojkata_najblizej_srodka(trojkat *trojkaty, int rozmiar, const ekran wyswietlacz);

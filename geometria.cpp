@@ -24,7 +24,7 @@ wektor wektor::operator-(const int &odjemnik) const
 
 int wektor::wyznacznik(const wektor &w) const
 {
-	return this->x * w.y - w.x * this->y;
+	return x * w.y - w.x * y;
 }
 
 long wektor::iloczyn_skalarny(const wektor &w) const
@@ -145,26 +145,9 @@ bool ekran::czy_wektor_w_zakresie(const wektor &w) const
 bool ekran::czy_trojkat_w_zakresie(const trojkat &t) const
 {
 	for (int i = 0; i < 3; ++i)
-		if (this->czy_trojkat_w_zakresie(t.punkty[i]))
+		if (this->czy_wektor_w_zakresie(t.punkty[i]))
 			return true;
 	return false;
-}
-
-trojkat *szukaj_trojkata_najblizej_srodka(std::vector<trojkat> &trojkaty, const ekran wyswietlacz)
-{
-	wektor srodek_ekranu = {wyswietlacz.x/2, wyswietlacz.y/2};
-	trojkat *tymczasowe_minimum = &trojkaty[0];
-	int indeks_tymczasowego_minimum = 0;
-	for (auto &t : trojkaty)
-		for (int i = 0; i < 3; ++i)
-				if (t.punkty[i].odleglosc_od(srodek_ekranu) < 
-				tymczasowe_minimum->punkty[indeks_tymczasowego_minimum].odleglosc_od(srodek_ekranu))
-				{
-					tymczasowe_minimum = &t;
-					indeks_tymczasowego_minimum = i;
-				}
-	return tymczasowe_minimum;
-
 }
 
 std::ostream &operator<<(std::ostream &s, const wektor &w)
@@ -183,4 +166,20 @@ std::ostream &operator<<(std::ostream &s, const ekran &e)
 {
     s << e.x << "x" << e.y;
     return s;
+}
+
+trojkat *szukaj_trojkata_najblizej_srodka(trojkat *trojkaty, int rozmiar, const ekran wyswietlacz)
+{
+	wektor srodek_ekranu = {wyswietlacz.x/2, wyswietlacz.y/2};
+	trojkat *tymczasowe_minimum = &trojkaty[0];
+	int indeks_tymczasowego_minimum = 0;
+	for (int j = 0; j < rozmiar; ++j)
+		for (int i = 0; i < 3; ++i)
+				if (trojkaty[j].punkty[i].odleglosc_od(srodek_ekranu) < 
+				tymczasowe_minimum->punkty[indeks_tymczasowego_minimum].odleglosc_od(srodek_ekranu))
+				{
+					tymczasowe_minimum = &trojkaty[j];
+					indeks_tymczasowego_minimum = i;
+				}
+	return tymczasowe_minimum;
 }
