@@ -37,6 +37,7 @@ class trojkat
 		trojkat operator+(const int &dodatnik);
 		trojkat operator-(const wektor &odjemnik);
 		trojkat operator-(const int &odjemnik);
+		double dlugosc_boku(const int &bok);
 		double obwod() const;
 		double pole() const;
 		bool czy_prostokatny() const;

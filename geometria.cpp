@@ -44,9 +44,7 @@ double wektor::dlugosc() const
 
 double wektor::odleglosc_od(const wektor &w) const
 {
-	wektor roznica;
-	roznica = *this - w;
-	return roznica.dlugosc();
+	return (*this - w).dlugosc();
 }
 
 trojkat trojkat::operator+(const wektor &dodajnik)
@@ -83,6 +81,22 @@ trojkat trojkat::operator-(const int &odjemnik)
 		this->punkty[i] = this->punkty[i] - odjemnik;
 	}
 	return *this;
+}
+
+double trojkat::dlugosc_boku(const int &bok)
+{
+	switch (bok)
+	{
+		case 0 :
+			return punkty[0].odleglosc_od(punkty[1]);
+		case 1 :
+			return punkty[1].odleglosc_od(punkty[2]);
+		case 2 :
+			return punkty[2].odleglosc_od(punkty[0]);
+		default :
+			std::cerr << "\nPodano zly bok!!!" << std::endl;
+			return -1;
+	}
 }
 
 double trojkat::obwod() const
