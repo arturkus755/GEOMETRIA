@@ -1,4 +1,5 @@
 #include "geometria.hpp"
+#include "ekran.hpp"
 #include <iostream>
 #include <cmath>
 
@@ -7,19 +8,14 @@ wektor wektor::operator+(const wektor &dodajnik) const
 	return wektor(x + dodajnik.x, y + dodajnik.y);
 }
 
-wektor wektor::operator+(const int &dodajnik) const
-{
-	return wektor(x + dodajnik, y + dodajnik);
-}
-
 wektor wektor::operator-(const wektor &odjemnik) const
 {
 	return wektor(x - odjemnik.x, y - odjemnik.y);
 }
 
-wektor wektor::operator-(const int &odjemnik) const
+wektor wektor::obrot90() const
 {
-	return wektor(x - odjemnik, y - odjemnik);
+	return wektor{-y, x};
 }
 
 int wektor::wyznacznik(const wektor &w) const
@@ -47,16 +43,21 @@ double wektor::odleglosc_od(const wektor &w) const
 	return (*this - w).dlugosc();
 }
 
-trojkat trojkat::operator+(const wektor &dodajnik)
+trojkat::trojkat(const ekran &e)
 {
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 3; i++)
 	{
-		this->punkty[i] = this->punkty[i] + dodajnik;
+		this->punkty[i].x = e.roz_x() / 2;
+		this->punkty[i].y = e.roz_y() / 2;
 	}
-	return *this;
 }
 
-trojkat trojkat::operator+(const int &dodajnik)
+void trojkat::ustaw_pkt(int nr_punktu, const wektor &nowy_punkt)
+{
+	punkty[nr_punktu] = nowy_punkt;
+}
+
+trojkat trojkat::operator+(const wektor &dodajnik)
 {
 	for (int i = 0; i < 3; ++i)
 	{
@@ -67,41 +68,22 @@ trojkat trojkat::operator+(const int &dodajnik)
 
 trojkat trojkat::operator-(const wektor &odjemnik)
 {
+	trojkat t{*this};
 	for (int i = 0; i < 3; ++i)
 	{
-		this->punkty[i] = this->punkty[i] - odjemnik;
+		t.punkty[i] = t.punkty[i] - odjemnik;
 	}
-	return *this;
+	return t;
 }
 
-trojkat trojkat::operator-(const int &odjemnik)
+double trojkat::dlugosc_boku(unsigned int bok) const
 {
-	for (int i = 0; i < 3; ++i)
-	{
-		this->punkty[i] = this->punkty[i] - odjemnik;
-	}
-	return *this;
-}
-
-double trojkat::dlugosc_boku(const int &bok)
-{
-	switch (bok)
-	{
-		case 0 :
-			return punkty[0].odleglosc_od(punkty[1]);
-		case 1 :
-			return punkty[1].odleglosc_od(punkty[2]);
-		case 2 :
-			return punkty[2].odleglosc_od(punkty[0]);
-		default :
-			std::cerr << "\nPodano zly bok!!!" << std::endl;
-			return -1;
-	}
+	return punkty[bok % 3].odleglosc_od(punkty[(bok + 1) % 3]);
 }
 
 double trojkat::obwod() const
 {
-	return punkty[0].odleglosc_od(punkty[1]) + punkty[1].odleglosc_od(punkty[2]) + punkty[0].odleglosc_od(punkty[2]);
+	return dlugosc_boku(0) + dlugosc_boku(1) + dlugosc_boku(2);
 }
 
 double trojkat::pole() const
@@ -137,17 +119,44 @@ bool trojkat::czy_rownoramienny() const
 	return false;
 }
 
-bool ekran::czy_wektor_w_zakresie(const wektor &w) const
+void kwadrat::ustaw_srod(const wektor &nowy_srodek)
 {
-	return !(w.x < 0 || w.y < 0 || w.x > x || w.y > y);
+	srodek = nowy_srodek;
 }
 
-bool ekran::czy_trojkat_w_zakresie(const trojkat &t) const
+void kwadrat::ustaw_wierzch( const wektor &nowy_wierzcholek)
 {
-	for (int i = 0; i < 3; ++i)
-		if (this->czy_wektor_w_zakresie(t.punkty[i]))
-			return true;
-	return false;
+	wierzcholek = nowy_wierzcholek;
+}
+
+kwadrat kwadrat::operator+(const wektor &dodajnik)
+{
+	kwadrat k{*this};
+	k.wierzcholek = k.wierzcholek + dodajnik;
+	k.srodek = k.srodek + dodajnik;
+	return k;
+}
+
+kwadrat kwadrat::operator-(const wektor &odjemnik)
+{
+	kwadrat k{*this};
+	k.wierzcholek = k.wierzcholek - odjemnik;
+	k.srodek = k.srodek - odjemnik;
+	return k;
+}
+
+double kwadrat::dlugosc_boku() const
+{
+	return (2.0 * srodek.odleglosc_od(wierzcholek)) / sqrt(2);
+}
+
+double kwadrat::obwod() const
+{
+	return 4.0 * dlugosc_boku();
+}
+double kwadrat::pole() const
+{
+	return dlugosc_boku() * dlugosc_boku();
 }
 
 std::ostream &operator<<(std::ostream &s, const wektor &w)
@@ -158,25 +167,19 @@ std::ostream &operator<<(std::ostream &s, const wektor &w)
 
 std::ostream &operator<<(std::ostream &s, const trojkat &t)
 {
-	s << t.punkty[0] << ", " << t.punkty[1] << ", " << t.punkty[2];
+	s << t.wsp(0) << ", " << t.wsp(1) << ", " << t.wsp(2);
 	return s;
-}
-
-std::ostream &operator<<(std::ostream &s, const ekran &e)
-{
-    s << e.x << "x" << e.y;
-    return s;
 }
 
 trojkat *szukaj_trojkata_najblizej_srodka(trojkat *trojkaty, int rozmiar, const ekran wyswietlacz)
 {
-	wektor srodek_ekranu = {wyswietlacz.x/2, wyswietlacz.y/2};
+	wektor srodek_ekranu = wektor{wyswietlacz.roz_x()/2, wyswietlacz.roz_x()/2};
 	trojkat *tymczasowe_minimum = &trojkaty[0];
 	int indeks_tymczasowego_minimum = 0;
 	for (int j = 0; j < rozmiar; ++j)
 		for (int i = 0; i < 3; ++i)
-				if (trojkaty[j].punkty[i].odleglosc_od(srodek_ekranu) < 
-				tymczasowe_minimum->punkty[indeks_tymczasowego_minimum].odleglosc_od(srodek_ekranu))
+				if (trojkaty[j].wsp(i).odleglosc_od(srodek_ekranu) < 
+				tymczasowe_minimum->wsp(indeks_tymczasowego_minimum).odleglosc_od(srodek_ekranu))
 				{
 					tymczasowe_minimum = &trojkaty[j];
 					indeks_tymczasowego_minimum = i;
