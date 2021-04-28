@@ -20,6 +20,8 @@ bool ekran::czy_trojkat_w_zakresie(const trojkat &t) const
 
 void ekran::rysuj(const trojkat &t, ALLEGRO_COLOR kolor, bool czy_pelny, float grubosc) const
 {
+	if (!(this->czy_trojkat_w_zakresie(t)))
+		throw std::invalid_argument{"Trojkat nie miesci sie na ekranie!"};
 	if (czy_pelny)
 		al_draw_filled_triangle(t.wsp(0).x, t.wsp(0).y, t.wsp(1).x, t.wsp(1).y, t.wsp(2).x, t.wsp(2).y, kolor);
 	else
@@ -35,6 +37,8 @@ void ekran::rysuj(const kwadrat &k, ALLEGRO_COLOR kolor, bool czy_pelny, float g
 	for (int i = 3; i >= 0; i--)
 	{
 		obrot = (obrot - k.wsp_srod()).obrot90() + k.wsp_srod();
+		if (!(this->czy_wektor_w_zakresie(obrot)))
+			throw std::invalid_argument{"Kwadrat nie miesci sie na ekranie!"};
 		wspolrzedne[2 * i] = obrot.x;
 		wspolrzedne[2 * i + 1] = obrot.y;
 	}

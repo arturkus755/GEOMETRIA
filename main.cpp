@@ -54,27 +54,30 @@ int main()
 {
 
 	if (!al_init())
-		throw std::runtime_error{"al_init() failed!"};
+		throw std::runtime_error{"al_init() zawiodl!"};
 
 	if (!al_install_keyboard())
-		throw std::runtime_error{"al_install_keyboard() failed!"};
+		throw std::runtime_error{"al_install_keyboard() zawiodl!"};
 
 	if (!al_init_primitives_addon())
-		throw std::runtime_error{"al_init_primitives_addon() failed!"};
+		throw std::runtime_error{"al_init_primitives_addon() zawiodl!"};
 	ekran e{1920, 1080};
 	std::cout << e << std::endl;
 	trojkat t(wektor(100,100), wektor(150,150), wektor(200,250));
 	std::cout << t << std::endl;
+	kwadrat k({wektor(300,300), wektor(350, 350)});
+	kwadrat k_kopia({wektor(300,300), wektor(350, 350)});
+	std::cout << k << std::endl;
 	
 	ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
 	if (!queue)
-		throw std::runtime_error{"al_create_event_queue() failed!"};
+		throw std::runtime_error{"al_create_event_queue() zawiodl!"};
 
 	al_register_event_source(queue, al_get_display_event_source(e.get_wyswietlacz()));
 
 	// Timer 60FPS tyka do kolejki i generuje zdarzenia
 	ALLEGRO_TIMER *timer = al_create_timer(1.0 / 60.0);
-	if (!timer) throw std::runtime_error{"al_create_timer() failed!"};
+	if (!timer) throw std::runtime_error{"al_create_timer() zawiodl!"};
 	al_register_event_source(queue, al_get_timer_event_source(timer));
 	al_start_timer(timer);
 
@@ -103,11 +106,14 @@ int main()
 		
 		// Czyścimy bufor
 		al_clear_to_color(al_map_rgb(0, 0, 0));
-
+		k_kopia = k;
+		k = k + wektor{5,0};
+		k_kopia.ustaw_wierzch(k.wsp_srod() + (k.wsp_srod() - k.wsp_wierzch()).obrot(n/10.f));
 		// Rysujemy wszystko
 		e.rysuj(t,al_map_rgb(255, 0, 0));
 
-		e.rysuj(kwadrat{wektor(300,300), wektor(100, 150 + 200 * std::sin(n / 80.f))}, al_map_rgb(254, 40, 180));
+		e.rysuj(k_kopia, al_map_rgb(254, 40, 180));
+		
 
 		// Zamiana buforów
 		al_flip_display();

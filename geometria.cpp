@@ -13,6 +13,12 @@ wektor wektor::operator-(const wektor &odjemnik) const
 	return wektor(x - odjemnik.x, y - odjemnik.y);
 }
 
+wektor wektor::obrot(float t) const
+{
+	return wektor{std::round(this->x * std::cos(t) - this->y * std::sin(t)),
+		std::round(this->x * std::sin(t) + this->y * std::cos(t))};
+}
+
 wektor wektor::obrot90() const
 {
 	return wektor{-y, x};
@@ -168,6 +174,12 @@ std::ostream &operator<<(std::ostream &s, const wektor &w)
 std::ostream &operator<<(std::ostream &s, const trojkat &t)
 {
 	s << t.wsp(0) << ", " << t.wsp(1) << ", " << t.wsp(2);
+	return s;
+}
+
+std::ostream &operator<<(std::ostream &s, const kwadrat &k)
+{
+	s << k.wsp_srod() << ", " << k.wsp_wierzch();
 	return s;
 }
 

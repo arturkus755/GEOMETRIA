@@ -17,6 +17,7 @@ class wektor
 		wektor &operator=(const wektor &przypisany) = default;
 		wektor operator+(const wektor &dodatnik) const;
 		wektor operator-(const wektor &odjemnik) const;
+		wektor obrot(float t) const;
 		wektor obrot90() const;
 		int wyznacznik(const wektor &w) const;
 		long iloczyn_skalarny(const wektor &w) const;
@@ -70,5 +71,6 @@ class kwadrat
 
 std::ostream &operator<<(std::ostream &s, const wektor &w);
 std::ostream &operator<<(std::ostream &s, const trojkat &t);
+std::ostream &operator<<(std::ostream &s, const kwadrat &k);
 
 trojkat *szukaj_trojkata_najblizej_srodka(trojkat *trojkaty, int rozmiar, const ekran wyswietlacz);
