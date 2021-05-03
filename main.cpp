@@ -2,7 +2,11 @@
 #include <cmath>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
-#include "geometria.hpp"
+
+#include "wektor.hpp"
+#include "wielokat.hpp"
+#include "trojkat.hpp"
+#include "kwadrat.hpp"
 #include "ekran.hpp"
 
 
@@ -63,10 +67,18 @@ int main()
 		throw std::runtime_error{"al_init_primitives_addon() zawiodl!"};
 	ekran e{1920, 1080};
 	std::cout << e << std::endl;
-	trojkat t(wektor(100,100), wektor(150,150), wektor(200,250));
+	wektor a, b ,c;
+	a = wektor(100,100);
+	b = wektor(150,150);
+	c = wektor(200,250);
+	trojkat t(&a, &b, &c);
 	std::cout << t << std::endl;
-	kwadrat k({wektor(300,300), wektor(350, 350)});
-	kwadrat k_kopia({wektor(300,300), wektor(350, 350)});
+	wektor s, w;
+	s = wektor(300,300);
+	w = wektor(350, 350);
+	wektor s2 = s, w2 = w;
+	kwadrat k(&s, &w);
+	kwadrat k_kopia(&s2, &w2);
 	std::cout << k << std::endl;
 	
 	ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
@@ -106,19 +118,20 @@ int main()
 		
 		// Czyścimy bufor
 		al_clear_to_color(al_map_rgb(0, 0, 0));
-		k_kopia = k;
-		k = k + wektor{5,0};
-		k_kopia.ustaw_wierzch(k.wsp_srod() + (k.wsp_srod() - k.wsp_wierzch()).obrot(n/10.f));
+
 		// Rysujemy wszystko
-		e.rysuj(t,al_map_rgb(255, 0, 0));
+		e.rysuj(t, al_map_rgb(255, 0, 0));
 
-		e.rysuj(k_kopia, al_map_rgb(254, 40, 180));
+		e.rysuj(k, al_map_rgb(0, 255, 0));
 		
-
 		// Zamiana buforów
 		al_flip_display();
+
 		n++;
 	}
+
+	e.usun(k);
+	e.usun(t);
 
 	al_destroy_event_queue(queue);
 	al_destroy_timer(timer);

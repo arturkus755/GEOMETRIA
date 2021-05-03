@@ -1,9 +1,11 @@
 #pragma once
 
-#include "geometria.hpp"
-
 #include <allegro5/allegro.h>
 #include <stdexcept>
+
+class wektor;
+class trojkat;
+class kwadrat;
 
 class ekran
 {
@@ -29,9 +31,10 @@ class ekran
 
     	bool czy_wektor_w_zakresie(const wektor &w) const;
     	bool czy_trojkat_w_zakresie(const trojkat &t) const;
-    	void rysuj(const wektor &t, ALLEGRO_COLOR kolor) const;
     	void rysuj(const trojkat &t, ALLEGRO_COLOR kolor, bool czy_pelny = true, float grubosc = 4.0) const;
 		void rysuj(const kwadrat &k, ALLEGRO_COLOR kolor, bool czy_pelny = true, float grubosc = 4.0) const;
+		void usun(const kwadrat &k) const;
+		void usun(const trojkat &t) const;
     	~ekran()
     	{
     	    al_destroy_display(wyswietlacz);
