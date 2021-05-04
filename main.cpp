@@ -71,6 +71,7 @@ int main()
 	a = wektor(100,100);
 	b = wektor(150,150);
 	c = wektor(200,250);
+	trojkat t3;
 	trojkat t(&a, &b, &c);
 	std::cout << t << std::endl;
 	wektor s, w;

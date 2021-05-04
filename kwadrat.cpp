@@ -3,6 +3,15 @@
 
 #include "kwadrat.hpp"
 #include "wektor.hpp"
+#include "ekran.hpp"
+
+kwadrat::kwadrat(const ekran &e)
+{
+	srodek->x = e.roz_x() / 2;
+	srodek->y = e.roz_x() / 2;
+	wierzcholek->x = e.roz_x() / 2;
+	wierzcholek->y = e.roz_x() / 2;
+}
 
 void kwadrat::ustaw_srod(const wektor &nowy_srodek)
 {
@@ -47,7 +56,7 @@ double kwadrat::pole() const
 
 std::ostream &operator<<(std::ostream &s, const kwadrat &k)
 {
-	s << *k.wsp_srod() << ", " << *k.wsp_wierzch();
+	s << *k.zwroc_srod() << ", " << *k.zwroc_wierzch();
 	return s;
 }
 

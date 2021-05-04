@@ -11,6 +11,7 @@ add_executable(
 	geometria
 	ekran.cpp
 	wektor.cpp
+	wielokat.cpp
 	kwadrat.cpp
 	trojkat.cpp
 	main.cpp

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iosfwd>
 
 class wektor;
@@ -9,9 +11,9 @@ class wielokat
 		wielokat() = default;
 		wielokat(wektor* w) : punkt{w} {}
 		wielokat(const ekran& e);
-		wektor* zwroc_wsp() const {return punkt;};
-		void ustaw_wsp(const wektor &w) {*punkt = w;}
-	private:
+		wektor* zwroc_wsp() const {return punkt;}
+		void ustaw_wsp(const wektor &w);
+	protected:
 		wektor* punkt;
 };
 

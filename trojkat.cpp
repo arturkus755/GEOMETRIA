@@ -85,7 +85,7 @@ bool trojkat::czy_rownoramienny() const
 
 std::ostream &operator<<(std::ostream &s, const trojkat &t)
 {
-	s << *t.wsp(0) << ", " << *t.wsp(1) << ", " << *t.wsp(2);
+	s << *t.zwroc_wsp(0) << ", " << *t.zwroc_wsp(1) << ", " << *t.zwroc_wsp(2);
 	return s;
 }
 
@@ -96,8 +96,8 @@ trojkat *szukaj_trojkata_najblizej_srodka(trojkat *trojkaty, int rozmiar, const 
 	int indeks_tymczasowego_minimum = 0;
 	for (int j = 0; j < rozmiar; ++j)
 		for (int i = 0; i < 3; ++i)
-				if (trojkaty[j].wsp(i)->odleglosc_od(srodek_ekranu) < 
-				tymczasowe_minimum->wsp(indeks_tymczasowego_minimum)->odleglosc_od(srodek_ekranu))
+				if (trojkaty[j].zwroc_wsp(i)->odleglosc_od(srodek_ekranu) < 
+				tymczasowe_minimum->zwroc_wsp(indeks_tymczasowego_minimum)->odleglosc_od(srodek_ekranu))
 				{
 					tymczasowe_minimum = &trojkaty[j];
 					indeks_tymczasowego_minimum = i;

@@ -1,16 +1,17 @@
+#pragma once
+
 #include <iosfwd>
 
-class wektor;
-class ekran;
+#include "wielokat.hpp"
 
-class trojkat
+class trojkat : protected wielokat
 {
 	public:
 		trojkat() = default;
 		trojkat(wektor* a, wektor* b, wektor* c) : punkty{a, b, c} {}
 		trojkat(wektor* wektor) : punkty{wektor,wektor,wektor} {}
 		trojkat(const ekran &e);
-		wektor* wsp(int nr_punktu) const {return punkty[nr_punktu];};
+		wektor* zwroc_wsp(int nr_punktu) const {return punkty[nr_punktu];};
 		void ustaw_pkt(int nr_punktu, const wektor &nowy_punkt);
 		trojkat &operator=(const trojkat &rzypisany) = default;
 		trojkat operator+(const wektor &dodajnik);
@@ -21,8 +22,9 @@ class trojkat
 		bool czy_prostokatny() const;
 		bool czy_rownoboczny() const;
 		bool czy_rownoramienny() const;
+		using wielokat::zwroc_wsp;
 	private:
-		wektor* punkty[3];
+		wektor* punkty[3] = {zwroc_wsp(), nullptr, nullptr};
 };
 
 std::ostream &operator<<(std::ostream &s, const trojkat &t);
