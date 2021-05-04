@@ -14,7 +14,7 @@ class wielokat
 		wektor* zwroc_wsp() const {return punkt;}
 		void ustaw_wsp(const wektor &w);
 	protected:
-		wektor* punkt;
+		wektor* punkt = nullptr;
 };
 
 std::ostream &operator<<(std::ostream &s, const wielokat &f);
