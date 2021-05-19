@@ -2,46 +2,52 @@
 #include <cmath>
 
 #include "kwadrat.hpp"
-#include "wektor.hpp"
 #include "ekran.hpp"
 
 kwadrat::kwadrat(const ekran &e)
 {
-	srodek->x = e.roz_x() / 2;
-	srodek->y = e.roz_x() / 2;
-	wierzcholek->x = e.roz_x() / 2;
-	wierzcholek->y = e.roz_x() / 2;
+	m_srodek = wektor{e.zwroc_roz_x() / 2, e.zwroc_roz_x() / 2};
+	m_wierzcholek = wektor{e.zwroc_roz_x() / 2, e.zwroc_roz_x() / 2};
+}
+
+wektor kwadrat::zwroc_wierzch() const
+{
+	return m_wierzcholek;
+}
+wektor kwadrat::zwroc_srod() const
+{
+	return m_srodek;
 }
 
 void kwadrat::ustaw_srod(const wektor &nowy_srodek)
 {
-	*srodek = nowy_srodek;
+	m_srodek = nowy_srodek;
 }
 
 void kwadrat::ustaw_wierzch( const wektor &nowy_wierzcholek)
 {
-	*wierzcholek = nowy_wierzcholek;
+	m_wierzcholek = nowy_wierzcholek;
 }
 
 kwadrat kwadrat::operator+(const wektor &dodajnik)
 {
 	kwadrat k{*this};
-	*k.wierzcholek = *k.wierzcholek + dodajnik;
-	*k.srodek = *k.srodek + dodajnik;
+	k.m_wierzcholek = k.m_wierzcholek + dodajnik;
+	k.m_srodek = k.m_srodek + dodajnik;
 	return k;
 }
 
 kwadrat kwadrat::operator-(const wektor &odjemnik)
 {
 	kwadrat k{*this};
-	*k.wierzcholek = *k.wierzcholek - odjemnik;
-	*k.srodek = *k.srodek - odjemnik;
+	k.m_wierzcholek = k.m_wierzcholek - odjemnik;
+	k.m_srodek = k.m_srodek - odjemnik;
 	return k;
 }
 
 double kwadrat::dlugosc_boku() const
 {
-	return (2.0 * srodek->odleglosc_od(*wierzcholek)) / sqrt(2);
+	return (2.0 * m_srodek.odleglosc_od(m_wierzcholek)) / sqrt(2);
 }
 
 double kwadrat::obwod() const
@@ -56,7 +62,7 @@ double kwadrat::pole() const
 
 std::ostream &operator<<(std::ostream &s, const kwadrat &k)
 {
-	s << *k.zwroc_srod() << ", " << *k.zwroc_wierzch();
+	s << k.zwroc_srod() << ", " << k.zwroc_wierzch();
 	return s;
 }
 

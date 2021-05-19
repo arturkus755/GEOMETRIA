@@ -4,27 +4,32 @@
 
 #include "wielokat.hpp"
 
-class trojkat : protected wielokat
+class trojkat : public wielokat
 {
 	public:
 		trojkat() = default;
-		trojkat(wektor* a, wektor* b, wektor* c) : punkty{a, b, c} {}
-		trojkat(wektor* wektor) : punkty{wektor,wektor,wektor} {}
+		trojkat(wektor a, wektor b, wektor c) : punkty{a, b, c} {}
+		trojkat(wektor wektor) : punkty{wektor,wektor,wektor} {}
 		trojkat(const ekran &e);
-		wektor* zwroc_wsp(int nr_punktu) const {return punkty[nr_punktu];};
+
+		wektor zwroc_pkt(int nr_punktu) const;
 		void ustaw_pkt(int nr_punktu, const wektor &nowy_punkt);
+
 		trojkat &operator=(const trojkat &rzypisany) = default;
 		trojkat operator+(const wektor &dodajnik);
 		trojkat operator-(const wektor &odjemnik);
+
 		double dlugosc_boku(unsigned int bok) const;
-		double obwod() const;
-		double pole() const;
+		double obwod() const override;
+		double pole() const override;
+
 		bool czy_prostokatny() const;
 		bool czy_rownoboczny() const;
 		bool czy_rownoramienny() const;
-		using wielokat::zwroc_wsp;
+
+		~trojkat() = default;
 	private:
-		wektor* punkty[3] = {zwroc_wsp(), nullptr, nullptr};
+		wektor punkty[3];
 };
 
 std::ostream &operator<<(std::ostream &s, const trojkat &t);

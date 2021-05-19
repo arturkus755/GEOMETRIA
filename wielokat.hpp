@@ -2,19 +2,17 @@
 
 #include <iosfwd>
 
-class wektor;
+#include "wektor.hpp"
+
 class ekran;
 
 class wielokat
 {
 	public:
 		wielokat() = default;
-		wielokat(wektor* w) : punkt{w} {}
-		wielokat(const ekran& e);
-		wektor* zwroc_wsp() const {return punkt;}
-		void ustaw_wsp(const wektor &w);
-	protected:
-		wektor* punkt = nullptr;
-};
 
-std::ostream &operator<<(std::ostream &s, const wielokat &f);
+		virtual double obwod() const = 0;
+		virtual double pole() const = 0;
+
+		~wielokat() = default;
+};
