@@ -11,8 +11,10 @@ class wielokat
 	public:
 		wielokat() = default;
 
+		virtual void opis() const = 0;
+
 		virtual double obwod() const = 0;
 		virtual double pole() const = 0;
 
-		~wielokat() = default;
+		virtual ~wielokat() = default;
 };

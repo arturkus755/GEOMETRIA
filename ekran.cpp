@@ -1,10 +1,14 @@
 #include <iostream>
+#include <cmath>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
 #include "ekran.hpp"
 #include "trojkat.hpp"
 #include "kwadrat.hpp"
+#include "romb.hpp"
+#include "prostokat.hpp"
+#include "rownoleglobok.hpp"
 
 bool ekran::czy_wektor_w_zakresie(const wektor &w) const
 {
@@ -52,6 +56,78 @@ void ekran::rysuj(const kwadrat &k, ALLEGRO_COLOR kolor, bool czy_pelny, float g
 		al_draw_polygon(wspolrzedne, 4, ALLEGRO_LINE_JOIN_MITER, kolor, grubosc, 3);
 }
 
+void ekran::rysuj(const romb &rom, ALLEGRO_COLOR kolor, bool czy_pelny, float grubosc) const
+{
+	float wspolrzedne[8];
+	wspolrzedne[6] = rom.zwroc_wierzch().zwroc_wsp_x();
+	wspolrzedne[7] = rom.zwroc_wierzch().zwroc_wsp_y();
+	wektor obrot = rom.zwroc_wierzch();
+	for (int i = 3; i >= 0; i--)
+	{
+		if (i % 2)
+			obrot = ((obrot - rom.zwroc_srod()) * (1.0 / rom.zwroc_stosunek_przekatnych())).obrot90() + rom.zwroc_srod();
+		else
+			obrot = ((obrot - rom.zwroc_srod()) * rom.zwroc_stosunek_przekatnych()).obrot90() + rom.zwroc_srod();
+		if (!(this->czy_wektor_w_zakresie(obrot)))
+			throw std::invalid_argument{"Romb nie miesci sie na ekranie!"};
+		wspolrzedne[2 * i] = obrot.zwroc_wsp_x();
+		wspolrzedne[2 * i + 1] = obrot.zwroc_wsp_y();
+	}
+	
+	if (czy_pelny)
+		al_draw_filled_polygon(wspolrzedne, 4, kolor);
+	else
+		al_draw_polygon(wspolrzedne, 4, ALLEGRO_LINE_JOIN_MITER, kolor, grubosc, 3);
+}
+
+void ekran::rysuj(const prostokat &pros, ALLEGRO_COLOR kolor, bool czy_pelny, float grubosc) const
+{
+	float wspolrzedne[8];
+	wspolrzedne[6] = pros.zwroc_wierzch().zwroc_wsp_x();
+	wspolrzedne[7] = pros.zwroc_wierzch().zwroc_wsp_y();
+	wektor obrot = pros.zwroc_wierzch();
+	for (int i = 3; i >= 0; i--)
+	{
+		if (i % 2)
+			obrot = (obrot - pros.zwroc_srod()).obrot(pros.zwroc_kat_miedzy_przekatnymi()) + pros.zwroc_srod();
+		else
+			obrot = (obrot - pros.zwroc_srod()).obrot(M_PI - pros.zwroc_kat_miedzy_przekatnymi()) + pros.zwroc_srod();
+		if (!(this->czy_wektor_w_zakresie(obrot)))
+			throw std::invalid_argument{"Romb nie miesci sie na ekranie!"};
+		wspolrzedne[2 * i] = obrot.zwroc_wsp_x();
+		wspolrzedne[2 * i + 1] = obrot.zwroc_wsp_y();
+	}
+	
+	if (czy_pelny)
+		al_draw_filled_polygon(wspolrzedne, 4, kolor);
+	else
+		al_draw_polygon(wspolrzedne, 4, ALLEGRO_LINE_JOIN_MITER, kolor, grubosc, 3);
+}
+
+void ekran::rysuj(const rownoleglobok &row, ALLEGRO_COLOR kolor, bool czy_pelny, float grubosc) const
+{
+	float wspolrzedne[8];
+	wspolrzedne[6] = row.zwroc_wierzch().zwroc_wsp_x();
+	wspolrzedne[7] = row.zwroc_wierzch().zwroc_wsp_y();
+	wektor obrot = row.zwroc_wierzch();
+	for (int i = 3; i >= 0; i--)
+	{
+		if (i % 2)
+			obrot = ((obrot - row.zwroc_srod()) * (1.0 / row.zwroc_stosunek_przekatnych())).obrot(row.zwroc_kat_miedzy_przekatnymi()) + row.zwroc_srod();
+		else
+			obrot = ((obrot - row.zwroc_srod()) * row.zwroc_stosunek_przekatnych()).obrot(M_PI - row.zwroc_kat_miedzy_przekatnymi()) + row.zwroc_srod();
+		if (!(this->czy_wektor_w_zakresie(obrot)))
+			throw std::invalid_argument{"Romb nie miesci sie na ekranie!"};
+		wspolrzedne[2 * i] = obrot.zwroc_wsp_x();
+		wspolrzedne[2 * i + 1] = obrot.zwroc_wsp_y();
+	}
+	
+	if (czy_pelny)
+		al_draw_filled_polygon(wspolrzedne, 4, kolor);
+	else
+		al_draw_polygon(wspolrzedne, 4, ALLEGRO_LINE_JOIN_MITER, kolor, grubosc, 3);
+}
+
 void ekran::usun(const kwadrat &k) const
 {
 	float wspolrzedne[8];
@@ -61,6 +137,66 @@ void ekran::usun(const kwadrat &k) const
 	for (int i = 3; i >= 0; i--)
 	{
 		obrot = (obrot - k.zwroc_srod()).obrot90();
+		wspolrzedne[2 * i] = obrot.zwroc_wsp_x();
+		wspolrzedne[2 * i + 1] = obrot.zwroc_wsp_y();
+	}
+	al_draw_filled_polygon(wspolrzedne, 4, al_map_rgb(0, 0, 0));
+}
+
+void ekran::usun(const romb &rom) const
+{
+	float wspolrzedne[8];
+	wspolrzedne[6] = rom.zwroc_wierzch().zwroc_wsp_x();
+	wspolrzedne[7] = rom.zwroc_wierzch().zwroc_wsp_y();
+	wektor obrot = rom.zwroc_wierzch();
+	for (int i = 3; i >= 0; i--)
+	{
+		if (i % 2)
+			obrot = ((obrot - rom.zwroc_srod()) * (1.0 / rom.zwroc_stosunek_przekatnych())).obrot90() + rom.zwroc_srod();
+		else
+			obrot = ((obrot - rom.zwroc_srod()) * rom.zwroc_stosunek_przekatnych()).obrot90() + rom.zwroc_srod();
+		if (!(this->czy_wektor_w_zakresie(obrot)))
+			throw std::invalid_argument{"Romb nie miesci sie na ekranie!"};
+		wspolrzedne[2 * i] = obrot.zwroc_wsp_x();
+		wspolrzedne[2 * i + 1] = obrot.zwroc_wsp_y();
+	}
+	al_draw_filled_polygon(wspolrzedne, 4, al_map_rgb(0, 0, 0));
+}
+
+void ekran::usun(const prostokat &pros) const
+{
+	float wspolrzedne[8];
+	wspolrzedne[6] = pros.zwroc_wierzch().zwroc_wsp_x();
+	wspolrzedne[7] = pros.zwroc_wierzch().zwroc_wsp_y();
+	wektor obrot = pros.zwroc_wierzch();
+	for (int i = 3; i >= 0; i--)
+	{
+		if (i % 2)
+			obrot = (obrot - pros.zwroc_srod()).obrot(pros.zwroc_kat_miedzy_przekatnymi()) + pros.zwroc_srod();
+		else
+			obrot = (obrot - pros.zwroc_srod()).obrot(M_PI - pros.zwroc_kat_miedzy_przekatnymi()) + pros.zwroc_srod();
+		if (!(this->czy_wektor_w_zakresie(obrot)))
+			throw std::invalid_argument{"Romb nie miesci sie na ekranie!"};
+		wspolrzedne[2 * i] = obrot.zwroc_wsp_x();
+		wspolrzedne[2 * i + 1] = obrot.zwroc_wsp_y();
+	}
+	al_draw_filled_polygon(wspolrzedne, 4, al_map_rgb(0, 0, 0));
+}
+
+void ekran::usun(const rownoleglobok &row) const
+{
+	float wspolrzedne[8];
+	wspolrzedne[6] = row.zwroc_wierzch().zwroc_wsp_x();
+	wspolrzedne[7] = row.zwroc_wierzch().zwroc_wsp_y();
+	wektor obrot = row.zwroc_wierzch();
+	for (int i = 3; i >= 0; i--)
+	{
+		if (i % 2)
+			obrot = ((obrot - row.zwroc_srod()) * (1.0 / row.zwroc_stosunek_przekatnych())).obrot(row.zwroc_kat_miedzy_przekatnymi()) + row.zwroc_srod();
+		else
+			obrot = ((obrot - row.zwroc_srod()) * row.zwroc_stosunek_przekatnych()).obrot(M_PI - row.zwroc_kat_miedzy_przekatnymi()) + row.zwroc_srod();
+		if (!(this->czy_wektor_w_zakresie(obrot)))
+			throw std::invalid_argument{"Romb nie miesci sie na ekranie!"};
 		wspolrzedne[2 * i] = obrot.zwroc_wsp_x();
 		wspolrzedne[2 * i + 1] = obrot.zwroc_wsp_y();
 	}

@@ -6,6 +6,9 @@
 class wektor;
 class trojkat;
 class kwadrat;
+class romb;
+class prostokat;
+class rownoleglobok;
 
 class ekran
 {
@@ -35,9 +38,15 @@ class ekran
 
     	void rysuj(const trojkat &t, ALLEGRO_COLOR kolor, bool czy_pelny = true, float grubosc = 4.0) const;
 		void rysuj(const kwadrat &k, ALLEGRO_COLOR kolor, bool czy_pelny = true, float grubosc = 4.0) const;
+		void rysuj(const romb &rom, ALLEGRO_COLOR kolor, bool czy_pelny = true, float grubosc = 4.0) const;
+		void rysuj(const prostokat &pros, ALLEGRO_COLOR kolor, bool czy_pelny = true, float grubosc = 4.0) const;
+		void rysuj(const rownoleglobok &row, ALLEGRO_COLOR kolor, bool czy_pelny = true, float grubosc = 4.0) const;
 		void usun(const kwadrat &k) const;
 		void usun(const trojkat &t) const;
-
+		void usun(const romb &rom) const;
+		void usun(const prostokat &pros) const;
+		void usun(const rownoleglobok &row) const;
+		
     	~ekran()
     	{
     	    al_destroy_display(wyswietlacz);

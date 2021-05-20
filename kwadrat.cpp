@@ -10,6 +10,11 @@ kwadrat::kwadrat(const ekran &e)
 	m_wierzcholek = wektor{e.zwroc_roz_x() / 2, e.zwroc_roz_x() / 2};
 }
 
+void kwadrat::opis() const
+{
+	std::cout << "kwadrat   ";
+}
+
 wektor kwadrat::zwroc_wierzch() const
 {
 	return m_wierzcholek;

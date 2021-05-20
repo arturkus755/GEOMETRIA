@@ -13,6 +13,11 @@ trojkat::trojkat(const ekran &e)
 	}
 }
 
+void trojkat::opis() const
+{
+	std::cout << "trojkat   ";
+}
+
 wektor trojkat::zwroc_pkt(int nr_punktu) const 
 {
 	return punkty[nr_punktu];

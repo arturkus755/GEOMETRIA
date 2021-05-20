@@ -2,6 +2,19 @@
 #include <cmath>
 
 #include "romb.hpp"
+#include "ekran.hpp"
+
+romb::romb(const ekran &e)
+{
+	m_srodek = wektor{e.zwroc_roz_x() / 2, e.zwroc_roz_x() / 2};
+	m_wierzcholek = wektor{e.zwroc_roz_x() / 2, e.zwroc_roz_x() / 2};
+	m_stosunek_przekatnych = 1.0;
+}
+
+void romb::opis() const
+{
+	std::cout << "romb      ";
+}
 
 void romb::ustaw_stosunek_przekatnych(double stosunek_przekatnych)
 {

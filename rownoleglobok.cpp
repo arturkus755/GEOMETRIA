@@ -2,6 +2,20 @@
 #include <cmath>
 
 #include "rownoleglobok.hpp"
+#include "ekran.hpp"
+
+rownoleglobok::rownoleglobok(const ekran &e)
+{
+	ustaw_srod(wektor{e.zwroc_roz_x() / 2.0, e.zwroc_roz_x() / 2.0});
+	ustaw_wierzch(wektor{e.zwroc_roz_x() / 2.0, e.zwroc_roz_x() / 2.0});
+	ustaw_kat_miedzy_przekatnymi(M_PI / 2.0);
+	ustaw_stosunek_przekatnych(1.0);
+}
+
+void rownoleglobok::opis() const
+{
+	std::cout << "rownoleglobok";
+}
 
 double rownoleglobok::dlugosc_boku(unsigned int nr_boku) const
 {
@@ -23,5 +37,5 @@ double rownoleglobok::obwod() const
 double rownoleglobok::pole() const
 {
 	return zwroc_wierzch().odleglosc_od(zwroc_srod()) * 2.0 * zwroc_wierzch().odleglosc_od(zwroc_srod())
-	/ zwroc_stosunek_przekatnych() * sin(zwroc_kat_miedzy_przekatnymi());
+		/ zwroc_stosunek_przekatnych() * sin(zwroc_kat_miedzy_przekatnymi());
 }

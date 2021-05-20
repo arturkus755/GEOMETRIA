@@ -11,6 +11,8 @@ class kwadrat : public wielokat
 		kwadrat(wektor nowy_srodek, wektor nowy_wierzcholek) : m_srodek(nowy_srodek), m_wierzcholek(nowy_wierzcholek) {}
 		kwadrat(const ekran &e);
 
+		void opis() const override;
+
 		wektor zwroc_wierzch() const;
 		wektor zwroc_srod() const;
 

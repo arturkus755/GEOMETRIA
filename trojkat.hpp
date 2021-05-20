@@ -12,6 +12,8 @@ class trojkat : public wielokat
 		trojkat(wektor wektor) : punkty{wektor,wektor,wektor} {}
 		trojkat(const ekran &e);
 
+		void opis() const override;
+
 		wektor zwroc_pkt(int nr_punktu) const;
 		void ustaw_pkt(int nr_punktu, const wektor &nowy_punkt);
 

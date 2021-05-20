@@ -3,7 +3,7 @@ project(GEOMETRIA)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -flto -march=native -DNDEBUG -s")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG -g")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG -g -fsanitize=address -fsanitize=undefined -fno-builtin -fno-omit-frame-pointer")
 
 find_package(SFML 2 COMPONENTS system window graphics REQUIRED)
 
